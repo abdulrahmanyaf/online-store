@@ -1,0 +1,8 @@
+{% extends 'admin_panel/product_categories/product_category_base_form.html' %}
+{% load i18n %}
+{% block card_title %}
+    <h6>{% translate 'Create New Product Category' %}</h6>
+{% endblock %}
+{% block buttons %}
+    <button type="submit" class="btn btn-primary">{% translate 'Create' %}</button>
+{% endblock %}
