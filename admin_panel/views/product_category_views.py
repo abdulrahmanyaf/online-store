@@ -5,6 +5,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView, CreateView, DeleteView
 from django.utils.translation import gettext as _
 
+from admin_panel.forms import ProductCategoryForm
 from products.models import ProductCategory
 
 
@@ -19,19 +20,29 @@ class ProductCategoryListView(ListView):
         return super().get_queryset().annotate(products_count=Count('products'))
 
 
+class ProductCategoryCreateView(CreateView):
+    model = ProductCategory
+    form_class = ProductCategoryForm
+    template_name = 'admin_panel/product_categories/product_category_create.html'
+    success_url = reverse_lazy('admin_panel:product_category_list')
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['updated_by'] = self.request.user
+        return kwargs
+
+
 class ProductCategoryUpdateView(UpdateView):
     model = ProductCategory
-    fields = ['title_en', 'title_ar', 'description_en', 'description_ar']
+    form_class = ProductCategoryForm
     template_name = 'admin_panel/product_categories/product_category_update.html'
     success_url = reverse_lazy('admin_panel:product_category_list')
     context_object_name = 'product_category'
 
-
-class ProductCategoryCreateView(CreateView):
-    model = ProductCategory
-    fields = ['title_en', 'title_ar', 'description_en', 'description_ar']
-    template_name = 'admin_panel/product_categories/product_category_create.html'
-    success_url = reverse_lazy('admin_panel:product_category_list')
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['updated_by'] = self.request.user
+        return kwargs
 
 
 class ProductCategoryDeleteView(DeleteView):
