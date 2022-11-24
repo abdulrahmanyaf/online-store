@@ -1,0 +1,8 @@
+{% extends 'admin_panel/products/product_base_form.html' %}
+{% load i18n %}
+{% block card_title %}
+    <h6>{% translate 'Update' %} {{ product.title_en }} {% translate 'Prodcut' %}</h6>
+{% endblock %}
+{% block buttons %}
+    <button type="submit" class="btn btn-primary">{% translate 'Update' %}</button>
+{% endblock %}

@@ -27,12 +27,19 @@ class Product(models.Model):
     model_number = models.CharField(max_length=256)
     description_ar = models.TextField()
     description_en = models.TextField(null=True, blank=True)
+    # TODO: make quantity null False
+    quantity = models.PositiveIntegerField(null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     specifications_ar = models.JSONField(null=True, blank=True)
     specifications_en = models.JSONField(null=True, blank=True)
 
-    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.RESTRICT, related_name='products_created')
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.RESTRICT,
+                                   related_name='product_set_created')
     created_at = models.DateTimeField(auto_now_add=True)
+    # TODO: make updated_by null False
+    updated_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.RESTRICT, null=True,
+                                   related_name='product_set_updated')
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.title_ar
@@ -64,8 +71,9 @@ class Order(models.Model):
     def __str__(self):
         return f"Created by {self.created_by} at {self.created_at}"
 
+
 class OrderItem(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.RESTRICT)
+    product = models.ForeignKey(Product, on_delete=models.RESTRICT, related_name='orders')
     order = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='order_items')
     quantity = models.PositiveIntegerField()
 
@@ -83,7 +91,7 @@ class ShoppingSession(models.Model):
 
 class CartItem(models.Model):
     shopping_session = models.ForeignKey(ShoppingSession, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.RESTRICT)
+    product = models.ForeignKey(Product, on_delete=models.RESTRICT, related_name='cart_items')
     quantity = models.PositiveIntegerField()
 
     def __str__(self):
