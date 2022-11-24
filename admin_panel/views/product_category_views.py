@@ -1,8 +1,7 @@
 from django.contrib import messages
 from django.db.models import Count
 from django.http import HttpResponseBadRequest
-from django.shortcuts import render
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView, CreateView, DeleteView
 from django.utils.translation import gettext as _
 
@@ -49,6 +48,8 @@ class ProductCategoryDeleteView(DeleteView):
         response = super().delete(request, *args, **kwargs)
         messages.success(request, _('Product category is deleted successfully'))
         return response
+
+
 
 
 
