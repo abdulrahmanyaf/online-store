@@ -1,11 +1,11 @@
 from django.contrib import messages
 from django.db.models import Count
-from django.http import HttpResponseBadRequest
+from django.http import HttpResponseBadRequest, HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView, CreateView, DeleteView
 from django.utils.translation import gettext as _
 
-from admin_panel.forms import ProductCategoryForm
+from products.forms import ProductCategoryForm, SpecificationFormset
 from products.models import ProductCategory
 
 
@@ -26,10 +26,36 @@ class ProductCategoryCreateView(CreateView):
     template_name = 'admin_panel/product_categories/product_category_create.html'
     success_url = reverse_lazy('admin_panel:product_category_list')
 
+    def get_specification_formset(self):
+        return SpecificationFormset(data=self.request.POST)
+
+
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['updated_by'] = self.request.user
         return kwargs
+
+    def get_context_data(self, **kwargs):
+        if "specification_formset" not in kwargs:
+            kwargs["specification_formset"] = self.get_specification_formset()
+        return super().get_context_data(**kwargs)
+
+    def post(self, request, *args, **kwargs):
+        self.object = None
+        form = self.get_form()
+        specification_formset = self.get_specification_formset()
+        if form.is_valid() and specification_formset.is_valid():
+            return self.forms_valid(form, specification_formset)
+        else:
+            return self.forms_invalid(form, specification_formset)
+
+    def forms_valid(self, form, specification_formset):
+        self.object = form.save(commit=False)
+        needed_data = specification_formset.needed_data
+        return HttpResponseRedirect(self.get_success_url())
+
+    def forms_invalid(self, form, specification_formset):
+        return self.render_to_response(self.get_context_data(form=form, specification_formset=specification_formset))
 
 
 class ProductCategoryUpdateView(UpdateView):

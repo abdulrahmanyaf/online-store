@@ -36,4 +36,21 @@ class ProductForm(forms.ModelForm):
         return super().save(commit)
 
 
+class SpecificationForm(forms.Form):
+    name = forms.CharField(max_length=128, required=True)
+    value = forms.CharField(max_length=128, required=True)
 
+
+class SpecificationFormset(forms.BaseFormSet):
+    @property
+    def needed_forms(self):
+        if self.can_delete:
+            return [form for form in self.forms if not self._should_delete_form(form)]
+        return self.forms
+
+    @property
+    def needed_data(self):
+        return [{'name': form.cleaned_data['name'], 'value': form.cleaned_data['value']} for form in self.needed_forms]
+
+
+SpecificationFormset = forms.formset_factory(form=SpecificationForm, formset=SpecificationFormset, extra=0, can_delete=True)

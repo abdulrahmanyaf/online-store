@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     # Third Party Apps
     'crispy_forms',
+    "easy_formset",
     # System Apps
     "core",
     "products",
