@@ -1,5 +1,4 @@
 from django.urls import path
-
 from admin_panel.views.prodcut_views import ProductListView, ProductCreateView, ProductUpdateView, ProductDeleteView
 from admin_panel.views.product_category_views import ProductCategoryListView, ProductCategoryCreateView, \
     ProductCategoryUpdateView, ProductCategoryDeleteView

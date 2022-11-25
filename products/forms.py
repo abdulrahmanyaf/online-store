@@ -1,6 +1,6 @@
 from django import forms
 
-from products.models import Product, ProductCategory
+from products.models import Product, ProductCategory, ProductImage
 
 
 class ProductCategoryForm(forms.ModelForm):
@@ -54,3 +54,25 @@ class SpecificationFormset(forms.BaseFormSet):
 
 
 SpecificationFormset = forms.formset_factory(form=SpecificationForm, formset=SpecificationFormset, extra=0, can_delete=True)
+
+
+class ProductImageForm(forms.ModelForm):
+    class Meta:
+        model = ProductImage
+        fields = ['file']
+
+    def __init__(self, *args, **kwargs):
+        self.updated_by = kwargs.pop('updated_by')
+        self.product = kwargs.pop('product')
+        super().__init__(*args, **kwargs)
+
+    def save(self, commit=True):
+        if self.product:
+            self.instance.product = self.product
+        if not self.instance.pk:
+            self.instance.created_by = self.updated_by
+        self.instance.updated_by = self.updated_by
+        return super().save(commit)
+
+
+ProductImageFormset = forms.modelformset_factory(model=ProductImage, form=ProductImageForm, extra=0, can_delete=True)

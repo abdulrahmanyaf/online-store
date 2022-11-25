@@ -9,7 +9,7 @@
     <main class="main-content position-relative border-radius-lg ">
 
         <div class="container-fluid py-4">
-            <form method="post">
+            <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="row">
                     <div class="col-12">
@@ -215,6 +215,75 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card mb-4">
+                            <div class="card-header pb-0">
+                                <h6>{% translate 'Product Images' %}</h6>
+                            </div>
+                            <div class="card-body">
+                                {% with product_image_formset as formset %}
+                                    <div id="{{ formset.prefix }}">
+                                        {{ formset.management_form }}
+                                        <template formset-empty-form="{{ formset.prefix }}">
+                                            <div class="row">
+                                                <div class="col-11">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <div class="form-group">
+                                                                {{ formset.empty_form.id }}
+                                                                {{ formset.empty_form.file|as_crispy_field }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row pt-4 pb-3 mt-1 col-1 align-items-center">
+                                                    <button formset-form-delete="{{ formset.empty_form.prefix }}"
+                                                            href="#"#}
+                                                            class="btn btn-lg delete-btn d-flex justify-content-center h-85 ml-1 mb-0"#}
+                                                            type="button"><i#}
+                                                            class="fas fa-trash-alt text-danger"></i>{{ formset.empty_form.DELETE }}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </template>
+
+                                        <div formset-forms="{{ formset.prefix }}">
+                                            {% for form in formset.forms %}
+                                                <div formset-form>
+                                                    <div class="row">
+                                                        <div class="col-11">
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-group">
+                                                                        {{ form.id }}
+                                                                        {{ form.file|as_crispy_field }}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row pt-4 pb-3 mt-1 col-1 align-items-center">
+                                                            <button formset-form-delete="{{ form.prefix }}" href="#"#}
+                                                                    class="btn btn-lg delete-btn d-flex justify-content-center h-85 ml-1 mb-0"#}
+                                                                    type="button"><i#}
+                                                                    class="fas fa-trash-alt text-danger"></i>{{ form.DELETE }}
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="text-right">
+                                            <a formset-add="{{ formset.prefix }}" href="">Add new Image</a>
+                                        </div>
+                                    </div>
+                                {% endwith %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="text-right">
                     {% block buttons %}
                     {% endblock %}
@@ -229,5 +298,6 @@
     <script>
         const specificationEnFormset = new Formset("{{ specification_en_formset.prefix }}");
         const specificationArFormset = new Formset("{{ specification_ar_formset.prefix }}");
+        const productImageFormset = new Formset("{{ product_image_formset.prefix }}");
     </script>
 {% endblock extra_js %}

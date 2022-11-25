@@ -47,7 +47,7 @@ class Product(models.Model):
 
 
 class ProductImage(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_images')
     file = models.ImageField(upload_to='products-images/')
 
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.RESTRICT,
