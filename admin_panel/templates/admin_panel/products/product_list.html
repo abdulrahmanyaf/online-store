@@ -74,8 +74,8 @@
                                                     {% translate 'Update' %}
                                                 </a>
                                             </td>
-                                            {% if product.order_sum == 0 and product.cart_items_count == 0 %}
-                                                <td class="align-middle">
+                                            <td class="align-middle">
+                                                {% if product.order_sum == 0 and product.cart_items_count == 0 %}
                                                     <form method="post"
                                                           action="{% url 'admin_panel:product_delete' product.pk %}">
                                                         {% csrf_token %}
@@ -85,8 +85,8 @@
                                                             {% translate 'Delete' %}
                                                         </button>
                                                     </form>
-                                                </td>
-                                            {% endif %}
+                                                {% endif %}
+                                            </td>
                                         </tr>
                                     {% endfor %}
                                     </tbody>

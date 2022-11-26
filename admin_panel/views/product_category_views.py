@@ -2,10 +2,11 @@ from django.contrib import messages
 from django.db.models import Count
 from django.http import HttpResponseBadRequest
 from django.urls import reverse_lazy
-from django.views.generic import ListView, UpdateView, CreateView, DeleteView
+from django.views.generic import ListView, UpdateView, CreateView
 from django.utils.translation import gettext as _
 
 from admin_panel.mixins import SystemAdminAccessMixin
+from admin_panel.views.base import DeleteView
 from products.forms import ProductCategoryForm
 from products.models import ProductCategory
 

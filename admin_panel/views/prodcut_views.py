@@ -2,10 +2,11 @@ from django.contrib import messages
 from django.db.models import Sum, Count
 from django.http import HttpResponseBadRequest
 from django.urls import reverse_lazy
-from django.views.generic import ListView, UpdateView, CreateView, DeleteView
+from django.views.generic import ListView, UpdateView, CreateView
 from django.utils.translation import gettext as _
 
 from admin_panel.mixins import SystemAdminAccessMixin, ProductBaseFormMixin
+from admin_panel.views.base import DeleteView
 from products.models import Product, ProductImage
 
 
@@ -53,12 +54,12 @@ class ProductDeleteView(SystemAdminAccessMixin, DeleteView):
     success_message = _('Product was deleted successfully')
 
     def get_queryset(self):
-        return super().get_queryset().annotate(order_sum=Sum('orders__quantity', distinct=True),
+        return super().get_queryset().annotate(order_sum=Sum('orders__quantity', distinct=True, default=0),
                                                cart_items_count=Count("cart_items", distinct=True))
 
     def delete(self, request, *args, **kwargs):
-        product_category = self.get_object()
-        if product_category.product_count != 0 or product_category.cart_items_count != 0:
+        product = self.get_object()
+        if product.order_sum != 0 or product.cart_items_count != 0:
             return HttpResponseBadRequest()
         response = super().delete(request, *args, **kwargs)
         messages.success(request, self.success_message)
