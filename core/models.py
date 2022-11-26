@@ -5,5 +5,8 @@ from django.db import models
 
 
 class User(AbstractUser):
-    pass
+
+    @property
+    def is_system_admin(self):
+        return self.groups.filter(name='SystemAdmins').exists()
 

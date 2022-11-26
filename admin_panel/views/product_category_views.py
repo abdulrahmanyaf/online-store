@@ -1,17 +1,18 @@
 from django.contrib import messages
 from django.db.models import Count
-from django.http import HttpResponseBadRequest, HttpResponseRedirect
+from django.http import HttpResponseBadRequest
 from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView, CreateView, DeleteView
 from django.utils.translation import gettext as _
 
-from products.forms import ProductCategoryForm, SpecificationFormset
+from admin_panel.mixins import SystemAdminAccessMixin
+from products.forms import ProductCategoryForm
 from products.models import ProductCategory
 
 
 # Create your views here.
 
-class ProductCategoryListView(ListView):
+class ProductCategoryListView(SystemAdminAccessMixin, ListView):
     model = ProductCategory
     template_name = 'admin_panel/product_categories/product_categories_list.html'
     context_object_name = 'product_categories'
@@ -20,7 +21,7 @@ class ProductCategoryListView(ListView):
         return super().get_queryset().annotate(products_count=Count('products'))
 
 
-class ProductCategoryCreateView(CreateView):
+class ProductCategoryCreateView(SystemAdminAccessMixin, CreateView):
     model = ProductCategory
     form_class = ProductCategoryForm
     template_name = 'admin_panel/product_categories/product_category_create.html'
@@ -32,7 +33,7 @@ class ProductCategoryCreateView(CreateView):
         return kwargs
 
 
-class ProductCategoryUpdateView(UpdateView):
+class ProductCategoryUpdateView(SystemAdminAccessMixin, UpdateView):
     model = ProductCategory
     form_class = ProductCategoryForm
     template_name = 'admin_panel/product_categories/product_category_update.html'
@@ -45,7 +46,7 @@ class ProductCategoryUpdateView(UpdateView):
         return kwargs
 
 
-class ProductCategoryDeleteView(DeleteView):
+class ProductCategoryDeleteView(SystemAdminAccessMixin, DeleteView):
     model = ProductCategory
     success_url = reverse_lazy('admin_panel:product_category_list')
 
