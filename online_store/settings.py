@@ -153,3 +153,5 @@ CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 LOGIN_REDIRECT_URL = reverse_lazy("home")
 LOGOUT_REDIRECT_URL = reverse_lazy("home")
+
+SYSTEM_ADMIN_GROUP = 'SystemAdmins'
