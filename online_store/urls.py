@@ -19,8 +19,9 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('admin-panel/', include('admin_panel.urls')),
     path('admin/', admin.site.urls),
+    path('admin-panel/', include('admin_panel.urls')),
+    path('api/', include('rest_api.urls')),
 ]
 
 if settings.DEBUG:

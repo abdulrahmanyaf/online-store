@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "core",
     "products",
     "admin_panel",
+    "rest_api",
 ]
 
 MIDDLEWARE = [
