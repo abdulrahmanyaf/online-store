@@ -16,12 +16,17 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, reverse_lazy
+from django.contrib.auth.views import LoginView, LogoutView
+from django.views.generic import RedirectView
 
 urlpatterns = [
+    path('', RedirectView.as_view(url=reverse_lazy('admin_panel:product_category_list')), name='home'),
     path('admin/', admin.site.urls),
     path('admin-panel/', include('admin_panel.urls')),
     path('api/', include('rest_api.urls')),
+    path("accounts/login/", LoginView.as_view(), name="login"),
+    path("accounts/logout/", LogoutView.as_view(), name="logout"),
 ]
 
 if settings.DEBUG:
