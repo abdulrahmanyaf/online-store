@@ -1,7 +1,7 @@
 from django.db import models
 from django.dispatch import receiver
 
-from online_store.utils import delete_file
+from utils.utils import delete_file
 from products.models import ProductImage
 
 

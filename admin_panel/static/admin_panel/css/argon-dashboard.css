@@ -23783,11 +23783,10 @@ hr.horizontal.gray-light {
   align-items: center;
   justify-content: center;
   color: #8392ab;
-  padding: 0;
+  padding: 0px;
   margin: 0 3px;
-  border-radius: 50% !important;
-  width: 36px;
-  height: 36px;
+  width: 70px;
+  height: 30px;
   font-size: 0.875rem;
 }
 

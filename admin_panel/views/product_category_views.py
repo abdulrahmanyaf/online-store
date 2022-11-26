@@ -17,6 +17,7 @@ class ProductCategoryListView(SystemAdminAccessMixin, ListView):
     model = ProductCategory
     template_name = 'admin_panel/product_categories/product_categories_list.html'
     context_object_name = 'product_categories'
+    paginate_by = 10
 
     def get_queryset(self):
         return super().get_queryset().annotate(products_count=Count('products'))

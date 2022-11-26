@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "core",
     "products",
     "admin_panel",
+    "utils",
     "rest_api",
 ]
 
@@ -79,6 +80,10 @@ TEMPLATES = [
         },
     },
 ]
+
+TEMPLATES_DIRS = (
+    os.path.join(BASE_DIR, "templates"),
+)
 
 WSGI_APPLICATION = 'online_store.wsgi.application'
 

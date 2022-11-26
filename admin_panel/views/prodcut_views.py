@@ -14,6 +14,7 @@ class ProductListView(SystemAdminAccessMixin, ListView):
     model = Product
     template_name = 'admin_panel/products/product_list.html'
     context_object_name = 'products'
+    paginate_by = 10
 
     def get_queryset(self):
         return super().get_queryset().annotate(order_sum=Sum('orders__quantity', distinct=True, default=0),
